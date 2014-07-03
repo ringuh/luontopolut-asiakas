@@ -1,0 +1,299 @@
+/* app css stylesheet */
+
+body
+{
+  background-color:#426262;
+  color:white;
+  margin:1px;
+}
+
+.navimenu
+{
+  width:100%;
+  /*height:11vh;*/
+  margin-bottom:2px;
+  display:block;
+}
+
+.navimenu > div
+{
+  background-color:Red;
+  float:left;
+  width:33.33%;
+  font-size:7vh;
+  height:10vh;
+  text-align:center;
+}
+
+.navimenu > div:hover
+{
+  cursor:pointer;
+  background-color:silver;
+}
+
+
+#map
+{
+   height:90%;
+   width:100%;
+   min-height:82vh;
+   min-width:80vw;
+}
+
+#verho
+{
+  display:none;
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100vw;
+  min-height:100vh;
+  overflow-x:hidden;
+  
+  z-index:1001;
+  background-color:silver;
+  padding-bottom:50px;
+}
+
+#popup,#reittiEdit
+{
+  width:90vw;
+  max-width:600px;
+  margin:10px auto;
+  z-index:1002;
+  font-size:28px;
+}
+#noty
+{
+	width:100vw;
+	max-width:100%;
+}
+
+.noty_buttons 
+{
+	
+	
+	
+}
+.noty_buttons > .btn
+{
+	
+	font-size:24px;
+	width:40%;
+	margin-right:5px;
+}
+.btn-primary
+{
+	background-color:lightgreen;
+}
+.btn-danger
+{
+	background-color:Red;
+}
+.noty_text
+{
+	font-size:24px;
+}
+#frontPage > ul
+{
+  margin:0px;
+  -webkit-padding-start:0px;
+}
+
+#frontpage > ul > li
+{
+  list-style-type: none;
+  margin:10px 0px;
+}
+
+#frontPage > ul > li > input[type=button]
+{
+  width:100%;
+  font-size:8vw;
+}
+
+input[type=button]
+{
+  width:100%;
+  font-size:8vw;
+}
+
+#etaisyys
+{
+  float:right;
+}
+
+.optionsList > li
+{
+	padding: 2vh 1vw;
+	height:10vh;
+	
+}
+
+.options, .kieli
+{
+  
+  min-height:40px;
+  text-align:center;
+}
+
+.options
+{
+  font-size: 5vw;
+  height:15vh;
+}
+
+.kieli > img
+{
+  width:25vw;
+  margin:2vw 6vw;
+}
+
+.mycluster {
+      min-width: 80px;
+      min-height: 40px;
+      background-color: greenyellow;
+      text-align: center;
+      font-size: 24px;
+      z-index:10000;
+      display:block;
+    }
+
+#mkPage
+{
+  
+  min-width:200px;
+  width:99%;
+  max-width:800px;
+  margin:0px auto;
+  font-size:22px;
+}
+
+#mkPage > select
+{
+  font-size:5vw;
+  width:100%;
+  margin:20px 0px;
+  cursor:pointer;
+}
+#mkPage input, #mkPage textarea, #verho textarea, #verho input
+{
+  font-size:4vw;
+  min-width:200px;
+  width:100%;
+  max-width:800px;
+}
+
+#mkPage textarea, #verho textarea
+{
+  margin-top:10px;
+  border:none;
+  min-height:200px;
+  height:40vh;
+}
+
+#mkPage input[type=submit], #reittiEdit input[type=submit]
+{
+  border:2px solid black;
+  width:100%;
+  cursor:pointer;
+}    
+#preview
+{
+  margin-top:20px;
+  border:2px solid black;
+  width:100%;
+  min-height:100px;
+}
+
+#mkPage td a, #mkPage td a:visited
+{
+  font-size:4vw;
+  /*text-decoration: none;*/
+  color:inherit;
+  padding:10px;
+}
+#mkPage table
+{
+  margin-bottom:20px;
+}
+
+#mkPage .smallButton
+{
+  margin:10px;
+  background-color:Red;
+  width:auto;
+  font-size:3vw;
+}
+
+.right
+{
+  float:right;
+  
+}
+
+.green
+{
+  fill:green;
+}
+
+.rocket
+{
+  fill:green;
+}
+
+.toggle_one
+{
+  background-color:lightblue !important;
+  border:2px solid black;
+}
+
+.toggle_two
+{
+  background-color:red !important;
+  border:2px solid black;
+}
+
+.colorIcon
+{
+  min-width:30px !important;
+  min-height:30px !important;
+  width:10vw !important;
+  height:10vw !important;
+  max-width:60px !important;
+  max-height:60px !important;
+  font-size:28px !important;
+  text-align:center;
+  padding:0px;
+}
+
+#popup input[type=text]
+{
+  font-size:28px;
+}
+
+#popup select
+{
+  font-size:38px;
+}
+
+#popup input[type=checkbox]
+{
+  max-width:60px;
+  min-width:30px;
+  width:5vw;
+  max-height:60px;
+  min-height:30px;
+  height:5vw;
+
+}
+
+#verho > h1,h2,h3,h4,h5,h6
+{
+  color:black !important;
+}
+
+#reittiEdit
+{
+  display:none;
+}
