@@ -1,0 +1,27 @@
+<div id="verho">
+		<div id="popup">
+			<input type="button" id="start" ng-click="goTo('/map')" ng-value="start" />
+		</div><!-- end of popup -->
+
+	</div> <!-- end of verho -->
+<input type="button" ng-click="reset()" value="reset" />
+<div class="kieli">
+
+	<h3 style="font-size:8vw;"> Select Language </h3>
+	<img id="suomi" ng-style="{border: !language || '5px solid black' }" src="img/englanti.png" ng-click="language = true" />
+	<img id="englanti" ng-style="{border: language || '5px solid black'}" src ="img/suomi.png" ng-click="language = false"/>
+
+</div>
+
+
+<div class="options"
+<span  ng-model="jou" style="font-size:2vw" ng-value="jou = (language && 'Connection mode: ' || 'Yhteystapa: ')">{{jou}}</span>
+	<toggle-switch		
+	    model="online"
+	    on-label="Online"
+	    knob-label=""
+	    off-label="Offline">
+	</toggle-switch>
+</div>
+<br>
+<input style="margin-top:10vh;width:99.9%;"type="button" class="options" type="button" ng-click="haeTiedot()" ng-value="dlOffline" />

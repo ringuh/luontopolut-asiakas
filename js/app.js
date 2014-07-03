@@ -4,6 +4,7 @@
 // Declare app level module which depends on filters, and services
 var app = angular.module('myApp', [
   'ngRoute',
+  'toggle-switch',
   'myApp.filters',
   'myApp.services',
   'myApp.directives',
@@ -56,7 +57,7 @@ var app = angular.module('myApp', [
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/map', {templateUrl: 'partials/mapPage.html', controller: 'MapCtrl'});
-  $routeProvider.when('/asetukset', {templateUrl: 'partials/asetukset.html', controller: 'optionsCtrl'});
+  $routeProvider.when('/options', {templateUrl: 'partials/options.html', controller: 'optionsCtrl'});
   $routeProvider.otherwise({redirectTo: '/map'});
 }]);
 

@@ -1,10 +1,11 @@
 'use strict';
 
 
-appCtrl.controller('uberCtrl', ['$scope', 
-	function($scope){
+appCtrl.controller('uberCtrl', ['$scope', 'siirto', 
+	function($scope, siirto){
 
-	
+	     siirto.init(); // initoidaan asetukset
+
 		
 				(function () {
   "use strict";
