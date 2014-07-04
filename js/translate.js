@@ -6,6 +6,7 @@ appService.service('translate', function(){
 	this.online;
 	this.offline;
 	this.start;
+	this.oLanguage;
 	
 	this.update = function(bool){ // siirto.language
 		
@@ -22,6 +23,7 @@ appService.service('translate', function(){
 			this.offline = "Ladataan offline-sisältö. Latauksessa voi kestää.";
 			this.online = "Käytetään internet-yhteyttä.";
 			this.start = "Aloita";
+			this.oLanguage = "Kieli:";
 				
 		}
 		else
@@ -37,6 +39,7 @@ appService.service('translate', function(){
 						+ '<br> Please wait patiently';
 			this.online = "Internet connection selected.";
 			this.start = "Begin";
+			this.oLanguage = "Language:";
 		}
 
 

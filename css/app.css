@@ -5,6 +5,7 @@ body
   background-color:#426262;
   color:white;
   margin:1px;
+  overflow-x:hidden;
 }
 
 .navimenu
@@ -142,17 +143,76 @@ input[type=button]
   text-align:center;
 }
 
-.options
+#options h1, #options h2,h4,h5,h6
 {
-  font-size: 5vw;
-  height:15vh;
+  color:white;
 }
 
-.kieli > img
+@media only screen 
+and (max-width : 768px) 
 {
-  width:25vw;
-  margin:2vw 6vw;
+  #options
+  {
+    margin:0px auto;
+    width:99%;
+    
+    font-size: 5vw;
+
+  
+  }
+  .kieli > img
+  {
+    width:25vw;
+    margin:2vw 6vw;
+  }
 }
+
+@media only screen 
+and (min-width : 769px) 
+{
+  #options
+  {
+    margin:0px auto;
+    width:99%;
+    max-width:768px;
+    font-size: 40px;
+
+  
+  }
+  #options input[type=button]
+  {
+    font-size:50px;
+  }
+  .kieli > img
+  {
+    width:25%;
+    margin:2% 6%;
+  }
+
+  .switch span
+  {
+    padding: 30px 15px !important;
+    
+    font-size:40px !important;
+  }
+
+
+}
+
+
+
+.connection
+{
+  margin: 10px auto;
+  width:50%;
+}
+.switch
+{
+  margin-left:20%;
+
+}
+
+
 
 .mycluster {
       min-width: 80px;
@@ -293,7 +353,7 @@ input[type=button]
 
 }
 
-#verho > h1,h2,h3,h4,h5,h6
+#verho > h1
 {
   color:black !important;
 }

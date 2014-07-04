@@ -21,11 +21,12 @@ appCtrl.controller('optionsCtrl',
 
 	$scope.testi = "optiooons";
 
-	$scope.language = true;
-	$scope.connection = true;
+	$scope.language = siirto.language;
+	$scope.connection = siirto.connection;
 	$scope.start = translate.start;
 
-	$scope.dlOffline= "Offline?";
+	$scope.dlOffline= translate.dlOffline;
+	$scope.oLanguage = translate.oLanguage;
 
 	$scope.reset = function(){
 		localStorage.removeItem("connection");
@@ -33,15 +34,38 @@ appCtrl.controller('optionsCtrl',
 	};
 
 	$scope.goTo = function(url)
-		{
+	{
 			$location.path(url);
-		};
-
-	function testiprkl(e){ alert(e)};
-	$scope.alert = function(e){
-		alert(e);
 	};
 
+	
+	$scope.changeLanguage = function(e){
+		siirto.setLanguage(e); // asetetaan kieli
+		refresh(); 
+	};
+
+	$scope.$watch('connection', function(x,y)
+	{
+		if( x != y)
+			siirto.setOnline(x);
+	});
+
+
+
+	$scope.haeTiedot = function(){
+		alert("haettaisiin offline tiedot, if it was implemented");
+	};
+
+	function refresh(){
+		// päivitetään sivun skoopit uudelle kielelle
+		
+		$scope.language = siirto.language;
+		$scope.connection = siirto.connection;
+		$scope.start = translate.start;
+		$scope.oLanguage = translate.oLanguage;
+		$scope.dlOffline = translate.dlOffline;
+
+	}
 	if( localStorage.getItem("connection") == null)
 	{	// mikäli yhteysmuotoa ei ole asetettu oletetaan ekaksi käynnistyksesi
 		$("#verho").fadeIn("slow");
