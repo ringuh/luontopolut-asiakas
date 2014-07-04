@@ -216,12 +216,16 @@ and (min-width : 769px)
 
 .mycluster {
       min-width: 80px;
-      min-height: 40px;
-      background-color: greenyellow;
+      min-height: 35px;
+      background-color: darkgreen;
       text-align: center;
+      padding:5px 10px;
       font-size: 24px;
-      z-index:10000;
+      z-index:200 !important;
       display:block;
+      border:1px solid grey;
+
+      border-radius:5px;
     }
 
 #mkPage

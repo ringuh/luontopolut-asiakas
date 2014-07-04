@@ -129,16 +129,18 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 	     	
 
 		     setTimeout(function(){
-		     	$(".leaflet-user-marker").css("z-index", "300 !important");
+		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
 		     }, 100);
 		     setTimeout(function(){
-		     	$(".leaflet-user-marker").css("z-index", "300 !important");
+		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
+		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
 		     }, 200);
 		     setTimeout(function(){
-		     	$(".leaflet-user-marker").css("z-index", "300 !important");
+		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
 		     }, 300);
 		     setTimeout(function(){
-		     	$(".leaflet-user-marker").css("z-index", "300 !important");
+		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
+		     	$('#noty').noty({text: "zindex", type:"error", timeout:"2000", dismissQueue:false});
 		     }, 1000);
 		     //henkilo.gpsSpot.setRadius(radius);
 		}
@@ -369,7 +371,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 		var clusters = L.markerClusterGroup({ // alustetaan markercluster
 			disableClusteringAtZoom: 14,
 			maxClusterRadius: 102000,
-			spiderfyOnMaxZoom: true, 
+			spiderfyOnMaxZoom: false, 
 			showCoverageOnHover: true, 
 			zoomToBoundsOnClick: true,							
 			iconCreateFunction: function (cluster) {
@@ -393,6 +395,8 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 		
 		this.drawPolku = function( polku, iLoc, indx, dd)
 		{
+			checkAlarm(iLoc);
+
 			var target = haeUnvisited();
 			if(!target){
 				alert("kaikki käyty");
@@ -400,7 +404,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 			}
 			var pts = [];
 			var dist = laskeMatka(indx, target, pts, iLoc);
-			dist += dd;
+			dist += dd + target.distance;
 			try{
 				
 				kartta.map.removeLayer(polku.reittiLine); // koitetaan poistaa edellinen
@@ -411,7 +415,12 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 			}
 			
 			console.log( "PTS:"+JSON.stringify(pts));
+			$scope.$apply(function(){
+				$scope.etaisyys = dist.toFixed(0);
+			});
+			
 			polku.reittiLine = L.polyline(pts, polyline_red).addTo(kartta.map);
+
 		};
 
 		function laskeMatka(indx, target, pts, iLoc)
@@ -476,6 +485,20 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 			}
 
 			return false;
+		}
+
+		var checkAlarm = function(iLoc)
+		{
+			console.log("checkAlarm");
+			for( var i in self.markers)
+			{
+				var d = iLoc.distanceTo(self.markers[i].latlng);
+				
+				if( self.markers[i].clickable && !self.markers[i].visited && self.markers[i].halytysraja >= d )
+				{
+					alert( "OLTIIN LÄHELLÄ "+ d + " " + self.markers[i].halytysraja );
+				}
+			}
 		}
 	}
 
