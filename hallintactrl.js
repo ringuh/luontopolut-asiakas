@@ -233,17 +233,6 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 			console.log("Kartta: onZoomend "+self.map.getZoom());
 			
 			self.locate(true); // for now avataan aina uusi tracki, jotta maxZoom lvl olisi haluttu
-	     	var radius = 2;
-	     	if( self.map.getZoom() < 11)
-	     		radius = 30;
-	     	else if( self.map.getZoom() < 13)
-	     		radius = 20;
-	     	else if( self.map.getZoom() < 15)
-	     		radius = 10;
-	     	else if( self.map.getZoom() < 17)
-		     	radius = 5;
-		     
-		     radius = radius * (20 - self.map.getZoom())*4;
 
 
 		     setTimeout(function(){
