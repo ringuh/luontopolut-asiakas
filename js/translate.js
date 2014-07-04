@@ -7,6 +7,7 @@ appService.service('translate', function(){
 	this.offline;
 	this.start;
 	this.oLanguage;
+	this.sisalto;
 	
 	this.update = function(bool){ // siirto.language
 		
@@ -24,6 +25,7 @@ appService.service('translate', function(){
 			this.online = "Käytetään internet-yhteyttä.";
 			this.start = "Aloita";
 			this.oLanguage = "Kieli:";
+			this.sisalto = "Karttamerkkien lataus epäonnistui";
 				
 		}
 		else
@@ -40,6 +42,7 @@ appService.service('translate', function(){
 			this.online = "Internet connection selected.";
 			this.start = "Begin";
 			this.oLanguage = "Language:";
+			this.sisalto = "Failed to load map objects";
 		}
 
 
