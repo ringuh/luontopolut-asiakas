@@ -1,5 +1,5 @@
-appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',  
-	function($scope, siirto, $http, $location) {
+appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$location',  
+	function($scope, siirto, translate, $http, $location) {
 		//tarkistetaan onko ensimmäinen käynnistys
 	if( localStorage.getItem("connection") == null)
 	{	// mikäli yhteysmuotoa ei ole asetettu oletetaan ekaksi käynnistyksesi
@@ -7,6 +7,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 		$location.path("/options");
 	}
  	
+ 	$scope.closePage = translate.close;
  	
 	function init()
 	{
@@ -213,6 +214,9 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 
 		function locate(val)
 		{
+			if( gps == 0)
+				return;
+
 			var seuranta = false;
 			var zoom = 17;
 			
@@ -362,7 +366,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 			iconCreateFunction: function (cluster) {
 				
 				cluster.on('click', function(){ // painettiin klustertekstiä
-					alert(self.id);
+					//alert(self.id);
 				});
 
 				return L.divIcon({ html: self.nimi, className: 'mycluster'});
@@ -481,7 +485,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 				
 				if( self.markers[i].clickable && !self.markers[i].visited && self.markers[i].halytysraja >= d )
 				{
-					alert( "OLTIIN LÄHELLÄ "+ d + " " + self.markers[i].halytysraja );
+					self.markers[i].openPage();
 				}
 			}
 		}
@@ -514,6 +518,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 
 		// alustetaan ikoni
 		var iconi = L.MakiMarkers.icon({icon: self.icon, color: self.color, size: self.size});
+		var vIcon = L.MakiMarkers.icon({icon: self.icon, color: "#C0C0C0", size: self.size});
 		var marker = L.marker(self.latlng, { icon: iconi })
 		.on('click', onMarkerClick); // luodaan marker
 		
@@ -526,20 +531,51 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 		//marker.addTo(kartta.map);
 		function onMarkerClick(e)
 		{
-			alert("e.getLatLng()");
-			/*
-			$scope.valittuMerkki = self;
-			$scope.colors = siirto.colors;
-			$scope.kuva = self.icon;
+			if( self.clickable == false || self.sivuID == -1)
+				return;
+			
+			$scope.sivuID = self.sivuID;
+			
 			$("#verho").fadeIn("slow");
-			$scope.$digest();
-			*/
+			
+			var pp = siirto.php+"upload/"+self.sivuID+"/index.html";
+			if( siirto.language )
+				pp = siirto.php+"upload/"+self.sivuID+"/index_eng.html"
+			$http.post( pp )
+			.success( function(data){ // haetaan lista kohteista
+				console.log(data);
+				data = data.replace("::url::", siirto.php+"upload/"+self.sivuID+"/" );
+				$("#sivuView").html(data);
+				
+				$scope.sivu = self;
+				try{
+					$scope.$digest();
+				}
+				catch(e)
+				{
+					console.log(e);
+				}
+			})
+			.error( function()
+			{	
+				$('#noty').noty({text: "sivun lataus failed", type:"error", timeout:"2000", dismissQueue:false});
+			});
 		}
+
+		this.openPage = function()
+		{
+			onMarkerClick(null);
+			this.visited = true;
+			marker.setIcon(vIcon);
+		};
 
 		console.log(JSON.stringify(e));
 	} // END OF MERKKI
 
 	
+	$scope.suljeVerho = function(){
+		$("#verho").fadeOut("slow");
+	};
 
 
 	$(document).ready(function(){

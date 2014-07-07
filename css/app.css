@@ -63,8 +63,8 @@ body
 
 #popup,#reittiEdit
 {
-  width:90vw;
-  max-width:600px;
+  width:95%;
+  max-width:768px;
   margin:10px auto;
   z-index:1002;
   font-size:28px;
@@ -371,4 +371,20 @@ and (min-width : 769px)
 #reittiEdit
 {
   display:none;
+}
+
+
+#sivuView
+{
+  overflow-x:hidden;
+  max-width:100%;
+  
+}
+
+#sivuView img
+{
+  max-width:100%;
+  float:left;
+  margin:20px;
+  
 }

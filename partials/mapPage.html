@@ -1,7 +1,12 @@
 	<div id="verho">
-		<div id="popup">
-		
+		<div id="popup" ng-init="sivu = null">
+			<h1>{{sivu.nimi}}</h1>
+			<div id="sivuView">
+
+			</div>
+			<input type="button" ng-click="suljeVerho()" ng-value="closePage" />
 		</div><!-- end of popup -->
+		
 
 	</div> <!-- end of verho -->
 	<div style="font-size:5vh;width:100%;">
