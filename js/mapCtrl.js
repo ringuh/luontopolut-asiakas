@@ -19,18 +19,6 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 
 
 
-
-
-
-
-
-
-
-
-	
-
-
-
 	function Kartta() // karttaluokka
 	{
 		var self = this;
@@ -50,6 +38,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 		.on('locationfound', henkilo.locationFound)
 		.on('locationerror', henkilo.locationError)
 		.on('click', henkilo.locationFound)
+		.on('moveend', moveEnd)
 		.on('zoomend', onZoomend); // eventit
 
 		var init = function() // asetetaan kartta
@@ -122,49 +111,28 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 
 		function onZoomend(){
 			// tapahtuu, kun zoomaus päättyy
-			// currently: säätää "omalokaatio-ympyrän" piirtosädettä METREISSÄ
-			
-			
-			//self.locate(true); // for now avataan aina uusi tracki, jotta maxZoom lvl olisi haluttu
-	     	
 
-		     setTimeout(function(){
-		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
-		     }, 100);
-		     setTimeout(function(){
-		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
-		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
-		     }, 200);
-		     setTimeout(function(){
-		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
-		     }, 300);
-		     setTimeout(function(){
-		     	$(".leaflet-marker-icon").css("z-index", "300 !important");
-		     	$('#noty').noty({text: "zindex", type:"error", timeout:"2000", dismissQueue:false});
-		     }, 1000);
-		     //henkilo.gpsSpot.setRadius(radius);
+			henkilo.locate(true);
+
+			
+		}
+
+		function moveEnd()
+		{
+			function doit(){
+	     		console.log("doit");
+	     		 $(".leaflet-clickable.maki-marker-icon").css("z-index", "1");
+	     		 $(".leaflet-zoom-animated").css("z-index", "0");
+	     		  $(".leaflet-usermarker-small").css("z-index", "120 !important");
+	     	}
+	     	
+		     setTimeout(doit, 300);
+		     setTimeout(doit, 500);
+		     setTimeout(doit, 1000);
 		}
 		
-		this.locate = function(bool)
-		{	// mikäli syötetään true kartta siirtyy gps mukana
-			console.log("Kartta: locate zlvl: "+self.map.getZoom());
-			if( henkilo.getGps() == 0)
-				return;
-
-			self.map.stopLocate(); // tapetaan edellinen haku
-			
-			var seuranta = false;
-			if( bool == 2)
-				seuranta = true;
-
-			self.map.locate( {
-						watch:true,setView: seuranta, 
-						maxZoom:self.map.getZoom(), maximumAge:500, 
-						enableHighAccuracy: true 
-					} ); // avataan uusi haku
-			
-			
-		};
+		
+		
 
 		/* 
 		 	KONTROLLERIT
@@ -237,16 +205,29 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 			
 			return gps;
 		};
+		this.locate = function(val)
+		{
+			locate(val);
+		};
 
-		function locate()
+		function locate(val)
 		{
 			var seuranta = false;
+			var zoom = 17;
+			
 			if( gps == 1)
+			{
 				seuranta = true;
-
+				if( val )
+				{
+					kartta.map.stopLocate();
+					zoom = kartta.map.getZoom();
+				}
+			}
+			
 			kartta.map.locate( {
 						watch:true,setView: seuranta, 
-						maxZoom:kartta.map.getZoom(), maximumAge:500, 
+						maxZoom:zoom, maximumAge:500, 
 						enableHighAccuracy: true 
 					} ); // avataan uusi haku	
 		}
@@ -260,7 +241,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 				
 				gpsSpot.setLatLng(e.latlng);
 				
-				if( e. accuracy != null)
+				if( e. accuracy != null && gps != 0)
 					gpsSpot.setAccuracy(e.accuracy);
 				
 			}
@@ -269,10 +250,13 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 				console.log(e.message);
 			}			
 					
-			if(gps == 1)	// muutetaan kontrollerin näköä			
+			if(gps == 1)	// muutetaan kontrollerin näköä	
+			{		
 				$(".leaflet-control-track-interior").addClass("toggle_one");
+				
+			}
 			
-			else				
+			else if( gps == 2)				
 				$(".leaflet-control-track-interior").removeClass("toggle_one").addClass("toggle_border");
 			
 			
@@ -370,7 +354,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 
 		var clusters = L.markerClusterGroup({ // alustetaan markercluster
 			disableClusteringAtZoom: 14,
-			maxClusterRadius: 102000,
+			maxClusterRadius: 500,
 			spiderfyOnMaxZoom: false, 
 			showCoverageOnHover: true, 
 			zoomToBoundsOnClick: true,							
@@ -414,7 +398,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 				console.log(e);
 			}
 			
-			console.log( "PTS:"+JSON.stringify(pts));
+			//console.log( "PTS:"+JSON.stringify(pts));
 			$scope.$apply(function(){
 				$scope.etaisyys = dist.toFixed(0);
 			});
