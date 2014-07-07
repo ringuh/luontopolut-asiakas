@@ -120,10 +120,11 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', '$http', '$location',
 		function moveEnd()
 		{
 			function doit(){
-	     		console.log("doit");
-	     		 $(".leaflet-clickable.maki-marker-icon").css("z-index", "1");
-	     		 $(".leaflet-zoom-animated").css("z-index", "0");
-	     		  $(".leaflet-usermarker-small").css("z-index", "120 !important");
+	     		
+	     		$(".leaflet-clickable.maki-marker-icon").css("z-index", "100");
+	     		$(".leaflet-zoom-animated").css("z-index", "0");
+	     		$(".leaflet-usermarker-small").css("z-index", "120 !important");
+	     		$(".leaflet-usermarker-large").css("z-index", "120 !important");
 	     	}
 	     	
 		     setTimeout(doit, 300);
