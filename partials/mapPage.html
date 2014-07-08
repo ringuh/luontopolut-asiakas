@@ -7,9 +7,21 @@
 			<input type="button" ng-click="suljeVerho()" ng-value="closePage" />
 		</div><!-- end of popup -->
 		
+		<div id="rataInfo" ng-init="info">
+			<h1>{{info.nimi}}</h1>
+			{{startUp}} {{info.osoite}}
+			<br/>
+			{{poi}}: {{truTarget}}
+			<br/>
+			{{pituus}}: {{lngth}} m
+
+			<br/>
+			{{kuvaus}}
+		</div>
 
 	</div> <!-- end of verho -->
-	<div style="font-size:5vh;width:100%;">
+	
+	<div id="mapPage">
 		<div style="float:left;overflow-x:hide">
 		
 		{{reitinNimi}} </div>
@@ -17,5 +29,7 @@
 		<!--<input type="button" style="height:auto;width:auto;font-size:inherit;margin-top:10px;" ng-click="editTrail()" value="Muokkaa" />-->
 	</div>
 	<div id="map"></div>
+
+	
 	
 	

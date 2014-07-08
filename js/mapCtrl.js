@@ -8,15 +8,24 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 	}
  	
  	$scope.closePage = translate.close;
+ 	$scope.startUp = translate.startup;
+ 	$scope.poi = translate.poi;
+ 	$scope.pituus = translate.pituus;
  	
 	function init()
 	{
 		console.log("init");
 		var kartta = new Kartta();
+		
+		$(".leaflet-control").click( function(){
+			$(this).animate({
+							opacity:0.2
+						}, "slow" ).animate({
+							opacity:1.0
+						}, "slow");		
+		});
 	}
 
-
-	
 
 
 
@@ -79,6 +88,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			*/
 
 			self.map.addControl( new L.Control.Track() );
+			self.map.addControl( new L.Control.openSettings() );
 
 			haeSisalto();
 			
@@ -164,6 +174,29 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			return new L.Control.Track(options);
 		};
 
+		L.Control.openSettings = L.Control.extend({
+			options: {
+				position: 'bottomleft',
+			},
+
+			onAdd: function (map) {
+				var controlDiv = L.DomUtil.create('div', 'leaflet-control-opensettings');
+				L.DomEvent
+					.addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
+					.addListener(controlDiv, 'click', L.DomEvent.preventDefault)
+				.addListener(controlDiv, 'click', function () { 
+						window.open("#/options", '_self');
+					});
+
+				var controlUI = L.DomUtil.create('div', 'leaflet-control-opensettings-interior', controlDiv);
+				controlUI.title = 'Settings';
+				return controlDiv;
+			}
+		});
+
+		L.control.OpenSettings = function (options) {
+			return new L.Control.openSettings(options);
+		};
 
 		/*
 			END OF KONTROLLERIT
@@ -364,10 +397,12 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			iconCreateFunction: function (cluster) {
 				
 				cluster.on('click', function(){ // painettiin klustertekstiä
-					//alert(self.id);
+					$("#verho").fadeIn("slow");
+					$("#rataInfo").show();
+					fillInfo();
 				});
-
-				return L.divIcon({ html: self.nimi, className: 'mycluster'});
+				var s = self.nimi.length * 10+20;
+				return L.divIcon({ html: self.nimi, className: 'mycluster', iconSize: new L.Point(s,35)});
 			
 			}					
 	 	});
@@ -380,8 +415,10 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		clusters.addLayer(polyline);
 		kartta.map.addLayer(clusters);
 		
-		this.drawPolku = function( polku, iLoc, indx, dd)
+		this.drawPolku = function( polku, iLoc, indx, dd) // TODETTIIN LÄHIMMÄKSI RADAKSI
 		{
+			$scope.lkm = self.visitRemain() +" / "+self.visitMarkers();
+			
 			checkAlarm(iLoc);
 
 			var target = haeUnvisited();
@@ -404,8 +441,9 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			//console.log( "PTS:"+JSON.stringify(pts));
 			$scope.$apply(function(){
 				$scope.etaisyys = dist.toFixed(0);
+
 			});
-			
+			// PIIRRETÄÄN REITTI
 			polku.reittiLine = L.polyline(pts, polyline_red).addTo(kartta.map);
 
 		};
@@ -413,13 +451,18 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		function laskeMatka(indx, target, pts, iLoc)
 		{
 			console.log("laskematka"+indx+ " vs "+target.nearest);
+			var ii = parseInt(indx);
+			var tt = parseInt(target.nearest);
+
 			var ret = 0;
-			if( indx > target.nearest) // lasketaan merkistä päin
+			if( ii > tt ) // lasketaan merkistä päin
 			{
 				
+				console.log("merkistä POIS");
 				
-				for( var i = target.nearest; i <= indx; ++i)
+				for( var i = tt; i <= ii; ++i)
 				{
+					
 					pts.push(self.pisteet[i]);
 					ret += self.pisteet[i].distance;
 				}
@@ -427,16 +470,19 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			}
 			else
 			{
+				console.log("merkistä PÄIN")
+				
 				pts.push(iLoc);
-				for( var i = indx; i < target.nearest; ++i ) // lasketaan henkilostä päin
+				for( var i = ii; i <= tt; ++i ) // lasketaan henkilostä päin
 				{
+					
 					pts.push(self.pisteet[i]);
 					ret += self.pisteet[i].distance;
 				}
 			}
 
 			if( pts.length == 1)
-				pts.push(self.pisteet[indx]);
+				pts.push(self.pisteet[ii]);
 
 			return ret;
 		}
@@ -487,6 +533,44 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 				}
 			}
 		}
+
+		function fillInfo()
+		{
+			$scope.info = self;
+			$scope.truTarget = self.visitMarkers();
+
+			var tt = 0;
+				for( var i in self.pisteet)
+					tt += self.pisteet[i].distance;
+			$scope.lngth = tt;
+
+			if( siirto.language )
+				$scope.kuvaus = self.desc;
+			else
+				$scope.kuvaus = self.kuvaus;
+
+			try{
+				$scope.$digest();
+			}
+			catch(e)
+			{
+				console.log(e.message);
+			}
+		}
+		this.visitMarkers = function(){
+			var truTarget = 0;
+			for(var i in self.markers)
+				if( self.markers[i].clickable )
+					truTarget += 1;
+			return truTarget;
+		};
+		this.visitRemain = function(){
+			var truTarget = 0;
+			for(var i in self.markers)
+				if( self.markers[i].clickable && !self.markers[i].visited )
+					truTarget += 1;
+			return truTarget;
+		};
 	}
 
 	function Piste(e)
@@ -573,6 +657,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 	
 	$scope.suljeVerho = function(){
 		$("#verho").fadeOut("slow");
+		$("#rataInfo").hide();
 	};
 
 

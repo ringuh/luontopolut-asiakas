@@ -24,7 +24,7 @@ body
   background-color:Red;
   float:left;
   width:33.33%;
-  font-size:7vh;
+  font-size:8vh;
   height:10vh;
   text-align:center;
 }
@@ -40,12 +40,17 @@ body
   margin-top:20vh;
   display:none;
 }
+#mapPage
+{
+  font-size:8vh;
+  height:10vh  ;
+}
 
 #map
 {
    height:90%;
    width:100%;
-   min-height:82vh;
+   min-height:89vh;
    min-width:80vw;
 }
 
@@ -64,7 +69,7 @@ body
   padding-bottom:50px;
 }
 
-#popup,#reittiEdit
+#popup,#reittiEdit, #rataInfo
 {
   width:95%;
   max-width:768px;
@@ -220,6 +225,7 @@ and (min-width : 769px)
 .mycluster {
       min-width: 80px;
       min-height: 35px;
+      width:auto;
       background-color: darkgreen;
       text-align: center;
       padding:5px 10px;
@@ -345,7 +351,7 @@ and (min-width : 769px)
   padding:0px;
 }
 
-#popup input[type=text]
+#popup input[type=text], #rataInfo input[type=text]
 {
   font-size:28px;
 }
@@ -392,4 +398,25 @@ and (min-width : 769px)
   
 }
 
+#rataInfo
+{
+  display:none;
+}
+
 } /* END OF MEDIA */
+
+
+@media only screen 
+and (orientation: portrait) 
+{
+  #mapPage
+  {
+    font-size:5vw !important;
+    height:6vw !important;
+  }
+
+  #map
+  {
+    height:94.5vh;
+  }
+}

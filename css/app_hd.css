@@ -10,29 +10,6 @@ body
   overflow-x:hidden;
 }
 
-.navimenu
-{
-  width:100%;
-  /*height:11vh;*/
-  margin-bottom:2px;
-  display:block;
-}
-
-.navimenu > div
-{
-  background-color:Red;
-  float:left;
-  width:33.33%;
-  font-size:7vh;
-  height:10vh;
-  text-align:center;
-}
-
-.navimenu > div:hover
-{
-  cursor:pointer;
-  background-color:silver;
-}
 
 #start
 {
@@ -42,12 +19,16 @@ body
 
 #map
 {
-   height:90%;
+   height:100%;
    width:100%;
-   min-height:82vh;
+   min-height:89vh;
    min-width:80vw;
 }
-
+#mapPage
+{
+  font-size:8vh;
+  height:10vh;
+}
 #verho
 {
   display:none;
@@ -63,7 +44,7 @@ body
   padding-bottom:50px;
 }
 
-#popup,#reittiEdit
+#popup,#reittiEdit,#rataInfo
 {
   width:95%;
   max-width:768px;
@@ -344,7 +325,7 @@ and (min-width : 769px)
   padding:0px;
 }
 
-#popup input[type=text]
+#popup input[type=text], #rataInfo input[type=text]
 {
   font-size:28px;
 }
@@ -389,6 +370,11 @@ and (min-width : 769px)
   float:left;
   margin:20px;
   
+}
+
+#rataInfo
+{
+  display:none;
 }
 
 

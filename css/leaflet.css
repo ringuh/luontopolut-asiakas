@@ -533,7 +533,8 @@
 .leaflet-control-savereitti-interior,
 .leaflet-control-editreitti-interior,
 .leaflet-control-followtrack-interior,
-.leaflet-control-savemap-interior
+.leaflet-control-savemap-interior,
+.leaflet-control-opensettings-interior
 {
     background-image: url(../img/svg/doublecircle.svg);
     width: 10vw;
@@ -571,8 +572,6 @@
 .leaflet-control-marker-interior
 {
     background-image: url(../img/marker.png);
-    /*width: 19px;
-    height: 33px;*/
 }
 
 .leaflet-control-track-interior, 
@@ -590,46 +589,30 @@
 .leaflet-control-reitti-interior
 {
     background-image: url(../img/trail.png);
-    /*width: 25px;
-    height: 23px;*/
-    
-
 }
 
 .leaflet-control-editreitti-interior
 {
     background-image: url(../img/back.png);
-    /*width: 25px;
-    height: 23px;*/
-    
-
 }
 
 .leaflet-control-savereitti-interior
 {
     background-image: url(../img/save.png);
-    /*width: 25px;
-    height: 26px;*/
-    
-
 }
 .leaflet-control-deletereitti-interior
 {
     background-image: url(../img/fail.png);
-    /*width: 24px;
-    height: 23px;*/
-    
-
 }
 
 .leaflet-control-savemap-interior
 {
     background-image: url(../img/tallenna.png);
-    /*width: 25px;
-    height: 26px;*/
-    
-
 }
 
+.leaflet-control-opensettings-interior
+{
+    background-image: url(../img/svg/settings.svg);
+}
 
 

@@ -8,6 +8,9 @@ appService.service('translate', function(){
 	this.start;
 	this.oLanguage;
 	this.sisalto;
+	this.startup;
+	this.poi;
+	this.pituus;
 	
 	this.update = function(bool){ // siirto.language
 		
@@ -26,6 +29,9 @@ appService.service('translate', function(){
 			this.start = "Aloita";
 			this.oLanguage = "Kieli:";
 			this.sisalto = "Karttamerkkien lataus epäonnistui";
+			this.startup = "Osoite:";
+			this.poi = "Kohteita";
+			this.pituus = "Pituus";
 				
 		}
 		else
@@ -43,6 +49,9 @@ appService.service('translate', function(){
 			this.start = "Begin";
 			this.oLanguage = "Language:";
 			this.sisalto = "Failed to load map objects";
+			this.startup = "Address:";
+			this.poi = "Points of Interest";
+			this.pituus = "Length";
 		}
 
 
