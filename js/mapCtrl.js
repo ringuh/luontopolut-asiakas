@@ -50,7 +50,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			var maxZoom = 19;
 			var southWest = L.latLng(-90, -180); // koko maailma
     		var northEast = L.latLng(90, 180);
-			var tiilit = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var tiilit = 'http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg';
 			
 
     		if( !siirto.connection) // mikäli OFFLINE tila
@@ -66,9 +66,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
     		var tileLayer = L.tileLayer( tiilit, { 
 				minZoom: minZoom,
 				maxZoom: maxZoom,
-				attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-					'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-					'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+				attribution: 'Tiles by <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
 				id: 'Tampereen Luontopolut',// lisenssiteksti, tärkeä
 				bounds: L.latLngBounds(southWest, northEast)
 
