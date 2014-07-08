@@ -398,6 +398,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 				
 				cluster.on('click', function(){ // painettiin klustertekstiä
 					$("#verho").fadeIn("slow");
+					$("#popup").hide();
 					$("#rataInfo").show();
 					fillInfo();
 				});
@@ -619,6 +620,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			$scope.sivuID = self.sivuID;
 			
 			$("#verho").fadeIn("slow");
+			$("#popup").show();
 			
 			var pp = siirto.php+"upload/"+self.sivuID+"/index.html";
 			if( siirto.language )
