@@ -9,14 +9,30 @@
 		
 		<div id="rataInfo" ng-init="info">
 			<h1>{{info.nimi}}</h1>
-			{{startUp}} {{info.osoite}}
-			<br/>
-			{{poi}}: {{truTarget}}
-			<br/>
-			{{pituus}}: {{lngth}} m
+			<table>
+				<tr>
+					<td style="padding-right:15px">{{pituus}}: {{lngth}} km</td><td> {{poi}}: {{info.truMarkers.length}}</td>
+				</tr>
+			</table><table>
+				<tr>
+					<td style="padding-right:15px"><strong>{{startUp}}</strong></td>
+					<td> {{info.osoite}}</td>
+				</tr>
+				<tr>
+					<td style="padding-right:15px"><strong>{{tags}}:</strong></td>
+					<td>{{tagit}}</td>
+				</tr>
+			</table>
+			<p>INFO</p>
+			<p>{{kuvaus}}</p>
+			<p>POINTS OF INTEREST</p>
+			<div ng-repeat="kohde in info.truMarkers">
+				{{$index+1}}. {{kohde.nimi}}
+			<hr/>
+			</div>
 
-			<br/>
-			{{kuvaus}}
+			
+
 			<input type="button" ng-click="suljeVerho()" ng-value="closePage" />
 		</div>
 

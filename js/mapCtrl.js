@@ -11,6 +11,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
  	$scope.startUp = translate.startup;
  	$scope.poi = translate.poi;
  	$scope.pituus = translate.pituus;
+ 	$scope.tags = translate.tags;
  	
 	function init()
 	{
@@ -352,6 +353,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		this.pituus = 0;
 		this.pisteet = [];
 		this.markers = [];
+		this.truMarkers = [];
 		
 		var polyline_options = {
 			  color: '#'+parseInt(rata.id)*parseInt(rata.id)+'00'
@@ -419,14 +421,11 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		this.drawPolku = function( polku, iLoc, indx, dd) // TODETTIIN LÄHIMMÄKSI RADAKSI
 		{
 			$scope.lkm = self.visitRemain() +" / "+self.visitMarkers();
-			
+			$scope.reitinNimi = self.nimi;
 			checkAlarm(iLoc);
 
 			var target = haeUnvisited();
-			if(!target){
-				alert("kaikki käyty");
-				return;
-			}
+			
 			var pts = [];
 			var dist = laskeMatka(indx, target, pts, iLoc);
 			dist += dd + target.distance;
@@ -438,7 +437,10 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			{
 				console.log(e);
 			}
-			
+			if(!target){
+				console.log("rata finished");
+				return;
+			}
 			//console.log( "PTS:"+JSON.stringify(pts));
 			$scope.$apply(function(){
 				$scope.etaisyys = dist.toFixed(0);
@@ -538,12 +540,13 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		function fillInfo()
 		{
 			$scope.info = self;
-			$scope.truTarget = self.visitMarkers();
+			self.visitMarkers();
+			haeTagit();
 
 			var tt = 0;
 				for( var i in self.pisteet)
 					tt += self.pisteet[i].distance;
-			$scope.lngth = tt;
+			$scope.lngth = (tt / 1000).toFixed(1);
 
 			if( siirto.language )
 				$scope.kuvaus = self.desc;
@@ -559,11 +562,11 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			}
 		}
 		this.visitMarkers = function(){
-			var truTarget = 0;
+			self.truMarkers = [];
 			for(var i in self.markers)
 				if( self.markers[i].clickable )
-					truTarget += 1;
-			return truTarget;
+					self.truMarkers.push(self.markers[i]);
+
 		};
 		this.visitRemain = function(){
 			var truTarget = 0;
@@ -572,6 +575,29 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 					truTarget += 1;
 			return truTarget;
 		};
+
+		function haeTagit()
+		{
+			$http.post( siirto.rajapinta, { cmd: "getTagit", id: self.id })
+			.success( function(data){
+				console.log( "Haettiin tagit\n"+data );
+				//$scope.tagit = "";
+				var tt = "";
+				for( var i in data )
+				{
+					tt += ", "+data[i].tagi;
+				}
+				$scope.tagit = tt.substr(2);
+				
+				
+			})
+			.error( function(){
+				
+				$('#noty').noty({text: 'Tagien haku epäonnistui', type:"error", timeout:"2000", dismissQueue:false});
+				
+			});
+		}
+
 	}
 
 	function Piste(e)
@@ -598,6 +624,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		this.visited = false;
 		this.nearest;
 		this.distance;
+		
 
 		// alustetaan ikoni
 		var iconi = L.MakiMarkers.icon({icon: self.icon, color: self.color, size: self.size});

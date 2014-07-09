@@ -11,6 +11,7 @@ appService.service('translate', function(){
 	this.startup;
 	this.poi;
 	this.pituus;
+	this.tags;
 	
 	this.update = function(bool){ // siirto.language
 		
@@ -32,6 +33,7 @@ appService.service('translate', function(){
 			this.startup = "Osoite:";
 			this.poi = "Kohteita";
 			this.pituus = "Pituus";
+			this.tags = "Tagit";
 				
 		}
 		else
@@ -50,8 +52,9 @@ appService.service('translate', function(){
 			this.oLanguage = "Language:";
 			this.sisalto = "Failed to load map objects";
 			this.startup = "Address:";
-			this.poi = "Points of Interest";
+			this.poi = "POI";
 			this.pituus = "Length";
+			this.tags = "Tags";
 		}
 
 
