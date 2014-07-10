@@ -14,8 +14,10 @@ body
 #start
 {
   margin-top:20vh;
+  font-size:6vw !important;
   display:none;
 }
+
 
 #map
 {

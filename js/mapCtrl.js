@@ -27,9 +27,20 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		});
 	}
 
+	function alarm()
+	{
+		if( siirto.vibrator )
+			navigator.notification.vibrate(3500);
+		if( siirto.sound )
+		{
+			var media = new Media("/android_asset/www/sound/halytys.wav"); //android
+			//var media = new Media("http://home.tamk.fi/~e2avaaka/miley.wav", onSuccess, onError); //wp8
+			media.play();
+		}
 
+	}
 
-
+	
 	function Kartta() // karttaluokka
 	{
 		var self = this;
@@ -44,7 +55,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 		this.map = L.map('map', 
 		{
 			center: [61.497649,23.784156],
-			zoom:10 
+			zoom:11 
 		})
 		.on('locationfound', henkilo.locationFound)
 		.on('locationerror', henkilo.locationError)
@@ -67,8 +78,8 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
     		{
     			console.log("offline init")
     			minZoom = 10;
-    			maxZoom = 17; // tätä tarkempia tiilejä ei ole
-    			tiilit = 'cdvfile://localhost/persistent/Luontopolut/MapQuest/{z}/{x}/{y}.jpg.tile';
+    			maxZoom = 16; // tätä tarkempia tiilejä ei ole
+    			tiilit = '/android_asset/www/MapQuest/{z}/{x}/{y}.jpg.tile';
     			southWest = L.latLng(60.0, 22.73); // tampere alue
     			northEast = L.latLng(62.48, 24.83);
     		}
@@ -97,26 +108,51 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 
 		function haeSisalto()
 		{
-			$http.post( siirto.rajapinta, { cmd: "haeClient" })
-			.success( function(data){ // haetaan lista kohteista
-				console.log("haettiin radat");
-				console.log(JSON.stringify(data["merkit"]));
-				//radat = data["radat"];
-				
-				sivut = data["sivut"];
-				tagit = data["tagit"];
+			if( siirto.connection )
+			{
+				$http.post( siirto.rajapinta, { cmd: "haeClient" })
+				.success( function(data){ // haetaan lista kohteista
+					//noty({text:"online haeSisalto", type:"error", timeout:"2000", dismissQueue:false});
+					console.log(JSON.stringify(data["merkit"]));
+					//radat = data["radat"];
+					
+					sivut = data["sivut"];
+					tagit = data["tagit"];
 
-				for( var i in data["radat"])
+					for( var i in data["radat"])
+					{
+						var id = data["radat"][i].id;
+						self.radat.push( new Reitti( self, data["radat"][i], data["reitit"][id], data["merkit"][id] ) );
+					}
+				
+				})
+				.error( function()
+				{	
+					noty({text: translate.sisalto, type:"error", timeout:"2000", dismissQueue:false});
+				});
+			}
+			else
+			{
+
+				var data = localStorage.getItem("offlineData");
+				if( data == null)
+				{
+					alert("offline data not found. please download it.");
+					return;
+				}
+				//noty({text:"offline haeSisalto", type:"error", timeout:"2000", dismissQueue:false});
+				data = JSON.parse(data);
+
+				sivut = data.sivut;
+				tagit = data.tagit;
+
+				for( var i in data.radat )
 				{
 					var id = data["radat"][i].id;
 					self.radat.push( new Reitti( self, data["radat"][i], data["reitit"][id], data["merkit"][id] ) );
 				}
-			
-			})
-			.error( function()
-			{	
-				$('#noty').noty({text: translate.sisalto, type:"error", timeout:"2000", dismissQueue:false});
-			});
+				
+			}
 		}
 
 		function onZoomend(){
@@ -126,6 +162,10 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 
 			
 		}
+
+		this.getTagit = function(){
+			return tagit;
+		};
 
 		function moveEnd()
 		{
@@ -302,7 +342,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 
 		this.locationError = function(e)
 		{
-			$('#noty').noty({text: e.message, type:"warning", timeout:"2000", dismissQueue:false});
+			noty({text: e.message, type:"warning", timeout:"2000", dismissQueue:false});
 			
 		};
 
@@ -532,6 +572,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 				
 				if( self.markers[i].clickable && !self.markers[i].visited && self.markers[i].halytysraja >= d )
 				{
+					alarm();
 					self.markers[i].openPage();
 				}
 			}
@@ -566,7 +607,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			for(var i in self.markers)
 				if( self.markers[i].clickable )
 					self.truMarkers.push(self.markers[i]);
-
+			return self.truMarkers.length;
 		};
 		this.visitRemain = function(){
 			var truTarget = 0;
@@ -578,24 +619,15 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 
 		function haeTagit()
 		{
-			$http.post( siirto.rajapinta, { cmd: "getTagit", id: self.id })
-			.success( function(data){
-				console.log( "Haettiin tagit\n"+data );
-				//$scope.tagit = "";
-				var tt = "";
-				for( var i in data )
-				{
-					tt += ", "+data[i].tagi;
-				}
-				$scope.tagit = tt.substr(2);
-				
-				
-			})
-			.error( function(){
-				
-				$('#noty').noty({text: 'Tagien haku epäonnistui', type:"error", timeout:"2000", dismissQueue:false});
-				
-			});
+			$scope.tagit = "";
+			var tt = "";
+			var data = kartta.getTagit();
+			data = data[self.id];
+			for( var i in data )
+			{
+				tt += ", "+data[i].tagi;
+			}
+			$scope.tagit = tt.substr(2);
 		}
 
 	}
@@ -648,14 +680,19 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			
 			$("#verho").fadeIn("slow");
 			$("#popup").show();
-			
-			var pp = siirto.php+"upload/"+self.sivuID+"/index.html";
+			var page = siirto.php+"upload/";
+
+			if( !siirto.connection)
+				page = 'cdvfile://localhost/persistent/Luontopolut/upload/';
+
+			var pp = page+self.sivuID+"/index.html";
 			if( siirto.language )
-				pp = siirto.php+"upload/"+self.sivuID+"/index_eng.html"
+				pp = page+self.sivuID+"/index_eng.html"
 			$http.post( pp )
 			.success( function(data){ // haetaan lista kohteista
 				console.log(data);
-				data = data.replace("::url::", siirto.php+"upload/"+self.sivuID+"/" );
+				
+				data = data.replace("::url::", page+self.sivuID+"/" );
 				$("#sivuView").html(data);
 				
 				$scope.sivu = self;
@@ -669,7 +706,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			})
 			.error( function()
 			{	
-				$('#noty').noty({text: "sivun lataus failed", type:"error", timeout:"2000", dismissQueue:false});
+				noty({text: "ERROR LOADING PAGE", type:"error", timeout:"2000", dismissQueue:false});
 			});
 		}
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp" class="no-js">
+<html lang="en" class="no-js">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,14 +18,14 @@
 
 
 
-  <div id="noty" style="position:absolute;z-index:100000;"></div>
+  <div id="noty" style="position:absolute;top:40vh;z-index:100000;"></div>
 
 
   <div ng-view></div>
-
-	<script src="bower_components/jquery/jquery-1.11.1.js"></script>
+<script src="cordova.js"></script><!--CORDOVA MOBiiLi ONLY -->
+<script src="bower_components/jquery/jquery-1.11.1.js"></script>
 	
-	<script type="text/javascript" src="js/noty/packaged/jquery.noty.packaged.min.js"></script>
+<script type="text/javascript" src="js/noty/packaged/jquery.noty.packaged.min.js"></script>
 	
   
   <script src="js/leaflet.js"></script>
@@ -50,6 +50,24 @@
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
   <script src="js/translate.js"></script>
+
+  <script>
+  	//angular.bootstrap(document, ['myApp']); // UNCOMMENT JOS EI MOBIILI
+  
+  /*
+    VAIN MOBIILILAITTEILLE
+  */ 
+   
+	document.addEventListener("deviceready", function() {
+        angular.element(document).ready(function () {
+            angular.bootstrap(document, ['myApp']);
+            navigator.splashscreen.hide();
+        });
+    }, false);
+  
+  /*
+  */
+  </script>
   
  
 </body>

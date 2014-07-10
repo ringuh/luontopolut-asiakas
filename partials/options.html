@@ -1,5 +1,6 @@
 <div id="verho">
 		<div id="popup">
+			<img src="img/zoomins.png"></img>
 			<input type="button" id="start" ng-click="goTo('/map')" ng-value="start" />
 		</div><!-- end of popup -->
 
@@ -25,6 +26,23 @@
 		    on-label="Online"
 		    knob-label=""
 		    off-label="Offline">
+		</toggle-switch>
+	</div>
+
+	<div class="connection" style="color:black;">
+	<h2 style="text-align:center;">{{proximity}}:</h2>
+		<toggle-switch		
+		    model="vibrator"
+		    on-label="On"
+		    knob-label="{{vibTxt}}"
+		    off-label="Off">
+		</toggle-switch>
+
+		<toggle-switch		
+		    model="sound"
+		    on-label="On"
+		    knob-label="{{soundTxt}}"
+		    off-label="Off">
 		</toggle-switch>
 	</div>
 	<br>

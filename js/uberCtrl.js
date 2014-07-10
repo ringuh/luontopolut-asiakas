@@ -62,6 +62,7 @@ appCtrl.controller('uberCtrl', ['$scope', 'siirto',
 
     initialize: function(options) {
       var pin;
+      var aUrl = L.MakiMarkers.apiUrl;
 
       options = L.setOptions(this, options);
 
@@ -77,7 +78,8 @@ appCtrl.controller('uberCtrl', ['$scope', 'siirto',
           L.extend(options, L.MakiMarkers.mediumOptions);
           break;
       }
-
+      if(localStorage.getItem("connection") == "offline")
+        aUrl = 'cdvfile://localhost/persistent/Luontopolut/markers/';
 
       pin = "pin-" + options.size;
 
@@ -92,9 +94,9 @@ appCtrl.controller('uberCtrl', ['$scope', 'siirto',
 
         pin += "+" + options.color;
       }
-
-      options.iconUrl = "" + L.MakiMarkers.apiUrl + pin +  ".png";
-      options.iconRetinaUrl = L.MakiMarkers.apiUrl + pin + "@2x.png";
+      
+      options.iconUrl = "" + aUrl + pin +  ".png";
+      options.iconRetinaUrl = aUrl + pin + "@2x.png";
     }
   });
 	

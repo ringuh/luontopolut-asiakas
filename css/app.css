@@ -38,8 +38,10 @@ body
 #start
 {
   margin-top:20vh;
+  font-size:6vh !important;
   display:none;
 }
+
 #mapPage
 {
   font-size:8vh;

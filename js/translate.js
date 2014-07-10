@@ -12,6 +12,15 @@ appService.service('translate', function(){
 	this.poi;
 	this.pituus;
 	this.tags;
+	this.continueDL;
+	this.vibTxt;
+	this.soundTxt;
+	this.proximity;
+	this.downloading;
+	this.skipped;
+	this.yes;
+	this.no;
+	this.dlEnd;
 	
 	this.update = function(bool){ // siirto.language
 		
@@ -34,6 +43,15 @@ appService.service('translate', function(){
 			this.poi = "Kohteita";
 			this.pituus = "Pituus";
 			this.tags = "Tagit";
+			this.continueDL = "Lataus keskeytyi. Ladataanko uudestaan?";
+			this.vibTxt = "Värinä";
+			this.soundTxt = "Hälytys";
+			this.proximity = "Hälytykset";
+			this.downloading = "Ladataan..";
+			this.skipped = "Tiedostoja ei ladata";
+			this.yes = "Kyllä";
+			this.no = "Ei";
+			this.dlEnd = "Lataukset valmiit";
 				
 		}
 		else
@@ -55,6 +73,15 @@ appService.service('translate', function(){
 			this.poi = "POI";
 			this.pituus = "Length";
 			this.tags = "Tags";
+			this.continueDL = "Downloading content was interrupted, shall we download again?";
+			this.vibTxt = "Vibrate";
+			this.soundTxt = "Alarm";
+			this.proximity = "Alarms";
+			this.downloading = "Downloading..";
+			this.skipped = "Skipping downloads";
+			this.yes = "Yes";
+			this.no = "No";
+			this.dlEnd = "Downloads finished";
 		}
 
 
