@@ -17,7 +17,7 @@ appCtrl.controller('optionsCtrl',
 	['$scope', '$http', 'siirto', 'asetukset', '$location', 'translate', 
 	function($scope, $http, siirto, conf, $location, translate){
 
-	$scope.testi = "optiooons";
+	siirto.thingToHide = 2;
 
 	$scope.language = siirto.language;
 	$scope.connection = siirto.connection;

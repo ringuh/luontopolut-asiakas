@@ -12,7 +12,8 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
  	$scope.poi = translate.poi;
  	$scope.pituus = translate.pituus;
  	$scope.tags = translate.tags;
- 	
+ 	siirto.thingToHide = 0;
+
 	function init()
 	{
 		console.log("init");
@@ -442,6 +443,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 					$("#verho").fadeIn("slow");
 					$("#popup").hide();
 					$("#rataInfo").show();
+					siirto.thingToHide = 3;
 					fillInfo();
 				});
 				var s = self.nimi.length * 10+20;
@@ -679,6 +681,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 			$scope.sivuID = self.sivuID;
 			
 			$("#verho").fadeIn("slow");
+			siirto.thingToHide = 3;
 			$("#popup").show();
 			var page = siirto.php+"upload/";
 
@@ -724,6 +727,7 @@ appCtrl.controller('MapCtrl', ['$scope', 'siirto', 'translate', '$http', '$locat
 	$scope.suljeVerho = function(){
 		$("#verho").fadeOut("slow");
 		$("#rataInfo").hide();
+		siirto.thingToHide = 0;
 	};
 
 

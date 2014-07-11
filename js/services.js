@@ -17,6 +17,7 @@ appService.service('siirto', function(translate){
 	this.sound = true;
 	this.connection = false;
 	this.language = true;
+	this.thingToHide = 0;
 
 	this.init = function(){ // uberctrl initoi asetukset kuntoon
 		
